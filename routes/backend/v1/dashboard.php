@@ -13,3 +13,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::controller(\App\Http\Controllers\v1\backend\DashboardController::class)->group(function (){
+
+    Route::get('/dashboard','Dashboard')->name('dashboard');
+
+});
