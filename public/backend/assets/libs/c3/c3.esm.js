@@ -7760,7 +7760,7 @@ ChartInternal.prototype.convertJsonToData = function(json, keys) {
     targetKeys,
     data;
   if (keys) {
-    // when keys specified, json would be an array that includes objects
+    // when keys specified, json would be an array that master_dashboard_includes objects
     if (keys.x) {
       targetKeys = keys.value.concat(keys.x);
       $$.config.data_x = keys.x;

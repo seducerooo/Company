@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::controller(\App\Http\Controllers\v1\backend\DashboardController::class)->group(function (){
 
-    Route::get('/dashboard','Dashboard')->name('dashboard');
+    Route::get('/dashboard','Dashboard')->name('dashboard')->middleware('verified','auth');
     Route::get('/logout','logout')->name('logout');
 
 

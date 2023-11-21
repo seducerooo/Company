@@ -1,7 +1,7 @@
 <div class="navbar-custom">
     <div class="container-fluid">
         <ul class="list-unstyled topnav-menu float-end mb-0">
-            @include('layouts.includes.master_navbar_user_detail')
+            @include('layouts.master_dashboard_includes.master_navbar_user_detail')
             <li class="dropdown notification-list">
                 <a href="javascript:void(0);" class="nav-link right-bar-toggle waves-effect waves-light">
                     <i class="fe-settings noti-icon"></i>

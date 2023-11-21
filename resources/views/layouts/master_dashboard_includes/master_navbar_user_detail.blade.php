@@ -4,7 +4,7 @@
         <img src="{{ asset('backend/assets/images/users/user-1.jpg') }}" alt="user-image"
              class="rounded-circle">
         <span class="pro-user-name ms-1">
-                                    Geneva <i class="mdi mdi-chevron-down"></i>
+                                    {{ \Illuminate\Support\Facades\Auth::user()->name }} <i class="mdi mdi-chevron-down"></i>
                                 </span>
     </a>
     <div class="dropdown-menu dropdown-menu-end profile-dropdown ">

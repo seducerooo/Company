@@ -4,12 +4,12 @@
 <head>
 
     <meta charset="utf-8"/>
-    <title>Dashboard | UBold - Responsive Admin Dashboard Template</title>
+    <title>@yield('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description"/>
     <meta content="Coderthemes" name="author"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    @include('layouts.includes.master_header_include')
+    @include('layouts.master_dashboard_includes.master_header_include')
 
 </head>
 
@@ -22,11 +22,11 @@
 
 
     <!-- Topbar Start -->
-@include('layouts.includes.master_topbar')
+    @include('layouts.master_dashboard_includes.master_topbar')
     <!-- end Topbar -->
 
     <!-- ========== Left Sidebar Start ========== -->
-    @include('layouts.includes.master_right_sidebar')
+    @include('layouts.master_dashboard_includes.master_right_sidebar')
     <!-- Left Sidebar End -->
 
     <!-- ============================================================== -->
@@ -76,13 +76,13 @@
 <!-- END wrapper -->
 
 <!-- Left Sidebar -->
-@include('layouts.includes.master_left_sidebar')
+@include('layouts.master_dashboard_includes.master_left_sidebar')
 <!-- /Right-bar -->
 
 <!-- Right bar overlay-->
 <div class="rightbar-overlay"></div>
 
-@include('layouts.includes.master_footer_include')
+@include('layouts.master_dashboard_includes.master_footer_include')
 
 </body>
 </html>
