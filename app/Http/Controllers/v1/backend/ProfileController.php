@@ -12,7 +12,7 @@ class ProfileController extends Controller
     //
     public function index(){
         $user_id = Auth::user()->id;
-        $UserProfile = User::query()->with('profile')->findOrFail($user_id);
-        return view('backend.profile.index');
+        $UserData = User::query()->with('profile')->findOrFail($user_id);
+        return view('backend.profile.index',compact('UserData'));
     }
 }

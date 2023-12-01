@@ -22,16 +22,34 @@
         <div class="col-lg-4 col-xl-4">
             <div class="card text-center">
                 <div class="card-body">
-                    <img src="{{ !empty($adminData->photo) ? url('upload/admin_images/'.$adminData->photo) : url('upload/no_image.jpg') }}" class="rounded-circle avatar-lg img-thumbnail"
+                    <img src="@if(isset($UserData['profile']['photo']))
+                         {{ url('upload/customer_images/'.$UserData['profile']['photo'])  }}
+                                  @else
+                             {{      url('upload/no_image.jpg') }}
+                                   @endif
+                                   "
+                         class="rounded-circle avatar-lg img-thumbnail"
                          alt="profile-image">
 
 
 
                     <div class="text-start mt-3">
 
-                        <p class="text-muted mb-2 font-13"><strong> نام  : </strong> <span class="ms-2">{{ $adminData->name }}</span></p>
+                        <p class="text-muted mb-2 font-13"><strong> نام  : </strong> <span class="ms-2">
+                                @if(isset($UserData['profile']['name']))
+                                {{ $UserData['profile']['name']}}
+                                @else
+                                {{  null }}
+                                @endif
+                            </span></p>
 
-                        <p class="text-muted mb-2 font-13"><strong>ایمیل / پست الکترونبک : </strong> <span class="ms-2">{{ $adminData->email }}</span></p>
+                        <p class="text-muted mb-2 font-13"><strong>ایمیل / پست الکترونبک : </strong> <span class="ms-2">
+                                @if(isset($UserData['profile']['email']))
+                                    {{ $UserData['profile']['email'] }}
+                                @else
+                                    {{  null }}
+                                @endif
+                            </span></p>
 
                     </div>
 
@@ -48,41 +66,81 @@
                     <div class="tab-content">
 
                         <div class="modalroozbeh" id="settings">
-                            <form class="roozbeh" id="profileForm" action="{{ route('user.profile.store') }}" method="post" enctype="multipart/form-data">
+                            <form class="roozbeh" id="profileForm" action="#" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <h5 class="mb-4 text-uppercase"><i class="mdi mdi-account-circle me-1"></i> اطلاعات شخصی</h5>
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="firstname" class="form-label">نام</label>
-                                            <input type="text" name="name" class="form-control" id="firstname" placeholder="نام خود را وارد کنید ..." value="{{ $adminData->name }}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="email" class="form-label">ایمیل / پست الکترونیک : </label>
-                                            <input type="email" name="email" class="form-control" id="email" placeholder="پست الکترونیک / ایمیل خود را وارد کنید ..." value="{{ $adminData->email }}">
-                                        </div>
-                                    </div> <!-- end col -->
                                     <div class="col-md-12 datepicker">
                                         <div class="mb-3">
                                             <label for="email" class="form-label">تاریخ تولد : </label>
-                                            <input value="{{ !empty($adminData->dob) ? $adminData->dob : now()->toJalali()->format('Y-m-d') }}"  name="dob" id="dob" data-jdp>
+                                            <input value="{{ !empty($UserData['profile']['dob']) ?
+                                                                    $UserData['profile']['dob'] :
+                                                                    now()->toJalali()->format('Y-m-d') }}"
+                                                   name="dob"
+                                                   id="dob"
+                                                   data-jdp>
                                         </div>
                                     </div> <!-- end col -->
-
-
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="example-fileinput" class="form-label">عکس نمایه</label>
                                             <input  name="photo" type="file" id="image" class="form-control">
                                             <br>
-                                            <img src="{{ !empty($adminData->photo) ?
-                                                          url('upload/admin_images/'.$adminData->photo) :
+                                            <img src="{{ !empty($UserData['profile']['photo']) ?
+                                                          url('upload/customer_images/'.$UserData['profile']['photo']) :
                                                           url('upload/no_image.jpg')}}"
                                                  class="rounded-circle avatar-lg img-thumbnail"
                                                  id="showImage"
                                                  alt="profile-image">
+                                        </div>
+                                    </div> <!-- end col -->
+
+                                    <div class="col-md-6">
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">شماره تلفن همراه :  </label>
+                                                <input
+                                                    type="text"
+                                                    name="phone"
+                                                    class="selectize-close-btn"
+                                                    value="@if(isset($UserData['profile']))
+                                                    @foreach($UserData['profile']['phone'] as $profilePhone)
+                                                    {{ $profilePhone['phone'] }}
+                                                    @endforeach"
+                                                    @endif
+                                                    placeholder="شماره تلفن همراه خود را وارد کنید ..." >
+                                            </div>
+                                        </div>
+                                    </div> <!-- end col -->
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="country" class="form-label">نام کشور:  </label>
+                                            <input type="text"
+                                                   name="country"
+                                                   class="form-control"
+                                                   id="country"
+                                                   placeholder="نام کشور خود را وارد کنید ..."
+                                                   value="
+                                                   @if( isset($UserData['profile']['country']))
+                                                   @foreach($UserData['profile']['country'] as $profileCountry)
+                                                   {{  trim($profileCountry['country'])  }}
+                                                   @endforeach
+                                                   @endif">
+                                        </div>
+                                    </div> <!-- end col -->
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="city" class="form-label">نام شهر:  </label>
+                                            <input type="text"
+                                                   name="city"
+                                                   class="form-control"
+                                                   id="city"
+                                                   placeholder="نام شهر خود را وارد کنید ..."
+                                                   value="@if( isset($UserData['profile']['city']))
+                                                          @foreach($UserData['profile']['city'] as $profileCountry)
+                                                   {{  trim($profileCountry['city'])  }}
+                                                          @endforeach
+                                                          @endif">
                                         </div>
                                     </div> <!-- end col -->
                                     <div class="col-md-6">

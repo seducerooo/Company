@@ -11,7 +11,7 @@
 
 
         <!-- item-->
-        <a href="javascript:void(0);" class="dropdown-item notify-item">
+        <a href="{{ route('user.profile') }}" class="dropdown-item notify-item">
             <i class="fe-user"></i>
             <span>حساب من</span>
         </a>

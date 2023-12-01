@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\v1\backend\DashboardController;
+use App\Http\Controllers\v1\backend\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +14,15 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::controller(\App\Http\Controllers\v1\backend\DashboardController::class)->group(function (){
+Route::controller(DashboardController::class)->group(function (){
 
     Route::get('/dashboard','Dashboard')->name('dashboard')->middleware('verified','auth');
     Route::get('/logout','logout')->name('logout');
 
 
+});
+
+
+Route::controller(ProfileController::class)->group(function (){
+    Route::get('/user/profile','index')->name('user.profile')->middleware('auth');
 });
