@@ -23,7 +23,7 @@
             <div class="card text-center">
                 <div class="card-body">
                     <img src="@if(isset($UserData['profile']['photo']))
-                         {{ url('upload/customer_images/'.$UserData['profile']['photo'])  }}
+                         {{ url( $UserData['profile']['photo'] )  }}
                                   @else
                              {{      url('upload/no_image.jpg') }}
                                    @endif
@@ -36,16 +36,44 @@
                     <div class="text-start mt-3">
 
                         <p class="text-muted mb-2 font-13"><strong> نام  : </strong> <span class="ms-2">
-                                @if(isset($UserData['profile']['name']))
-                                {{ $UserData['profile']['name']}}
+                                @if(isset($UserData['name']))
+                                {{ $UserData['name']}}
                                 @else
                                 {{  null }}
                                 @endif
                             </span></p>
 
                         <p class="text-muted mb-2 font-13"><strong>ایمیل / پست الکترونبک : </strong> <span class="ms-2">
-                                @if(isset($UserData['profile']['email']))
-                                    {{ $UserData['profile']['email'] }}
+                                @if(isset($UserData['email']))
+                                    {{ $UserData['email'] }}
+                                @else
+                                    {{  null }}
+                                @endif
+                            </span></p>
+                        <p class="text-muted mb-2 font-13"><strong>تاریخ تولد : </strong> <span class="ms-2">
+                                @if(isset($UserData['profile']['dob']))
+                                    {{ Hekmatinasser\Verta\Verta::parse($UserData['profile']['dob'],'Asia/Tehran')->format('Y/m/d') }}
+                                @else
+                                    {{  null }}
+                                @endif
+                            </span></p>
+                        <p class="text-muted mb-2 font-13"><strong>نام شهر : </strong> <span class="ms-2">
+                                @if(isset($UserData['profile']['city']))
+                                    {{ $UserData['profile']['city'] }}
+                                @else
+                                    {{  null }}
+                                @endif
+                            </span></p>
+                        <p class="text-muted mb-2 font-13"><strong>نام کشور : </strong> <span class="ms-2">
+                                @if(isset($UserData['profile']['country']))
+                                    {{ $UserData['profile']['country'] }}
+                                @else
+                                    {{  null }}
+                                @endif
+                            </span></p>
+                        <p class="text-muted mb-2 font-13"><strong>شماره: </strong> <span class="ms-2">
+                                @if(isset($UserData['profile']['phone']))
+                                    {{ str_replace(',', ' ', $UserData['profile']['phone']) }}
                                 @else
                                     {{  null }}
                                 @endif
@@ -66,18 +94,18 @@
                     <div class="tab-content">
 
                         <div class="modalroozbeh" id="settings">
-                            <form class="roozbeh" id="profileForm" action="#" method="post" enctype="multipart/form-data">
+                            <form  id="profileForm" action="{{ route('user.profile.store') }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <h5 class="mb-4 text-uppercase"><i class="mdi mdi-account-circle me-1"></i> اطلاعات شخصی</h5>
                                 <div class="row">
                                     <div class="col-md-12 datepicker">
                                         <div class="mb-3">
                                             <label for="email" class="form-label">تاریخ تولد : </label>
-                                            <input value="{{ !empty($UserData['profile']['dob']) ?
-                                                                    $UserData['profile']['dob'] :
-                                                                    now()->toJalali()->format('Y-m-d') }}"
-                                                   name="dob"
+                                            <input name="dob"
                                                    id="dob"
+                                                   value="{{ !empty($UserData['profile']['dob']) ?
+                                                                    $UserData['profile']['dob'] :
+                                                                    now()->toJalali()->format('Y/m/d') }}"
                                                    data-jdp>
                                         </div>
                                     </div> <!-- end col -->
@@ -87,7 +115,7 @@
                                             <input  name="photo" type="file" id="image" class="form-control">
                                             <br>
                                             <img src="{{ !empty($UserData['profile']['photo']) ?
-                                                          url('upload/customer_images/'.$UserData['profile']['photo']) :
+                                                          url($UserData['profile']['photo']) :
                                                           url('upload/no_image.jpg')}}"
                                                  class="rounded-circle avatar-lg img-thumbnail"
                                                  id="showImage"
@@ -103,11 +131,11 @@
                                                     type="text"
                                                     name="phone"
                                                     class="selectize-close-btn"
-                                                    value="@if(isset($UserData['profile']))
-                                                    @foreach($UserData['profile']['phone'] as $profilePhone)
-                                                    {{ $profilePhone['phone'] }}
-                                                    @endforeach"
+                                                    value="
+                                                    @if(isset($UserData['profile']['phone']))
+                                                        {{ $UserData['profile']['phone'] }}
                                                     @endif
+                                                   "
                                                     placeholder="شماره تلفن همراه خود را وارد کنید ..." >
                                             </div>
                                         </div>
@@ -120,12 +148,8 @@
                                                    class="form-control"
                                                    id="country"
                                                    placeholder="نام کشور خود را وارد کنید ..."
-                                                   value="
-                                                   @if( isset($UserData['profile']['country']))
-                                                   @foreach($UserData['profile']['country'] as $profileCountry)
-                                                   {{  trim($profileCountry['country'])  }}
-                                                   @endforeach
-                                                   @endif">
+                                                   value="{{ !empty( $UserData['profile']['country'] ) ?
+                                                                trim($UserData['profile']['country']) : ''}}">
                                         </div>
                                     </div> <!-- end col -->
                                     <div class="col-md-6">
@@ -136,11 +160,8 @@
                                                    class="form-control"
                                                    id="city"
                                                    placeholder="نام شهر خود را وارد کنید ..."
-                                                   value="@if( isset($UserData['profile']['city']))
-                                                          @foreach($UserData['profile']['city'] as $profileCountry)
-                                                   {{  trim($profileCountry['city'])  }}
-                                                          @endforeach
-                                                          @endif">
+                                                   value="{{ !empty( $UserData['profile']['city'] ) ?
+                                                                trim($UserData['profile']['city']) : ''}}">
                                         </div>
                                     </div> <!-- end col -->
                                     <div class="col-md-6">
@@ -191,14 +212,13 @@
             maxDate: "attr",
             minTime: "attr",
             maxTime: "attr",
-            initDate: "attr",
             hideAfterChange: true,
             autoHide: true,
             showTodayBtn: true,
             showEmptyBtn: true,
             topSpace: 10,
             bottomSpace: 30,
-            dayRendering(opt,input){
+             dayRendering(opt,input){
                 return {
                     isHollyDay:opt.day==1
                 }
